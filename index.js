@@ -4,7 +4,7 @@ var camelCase       = require('lodash.camelcase');
 var capitalize      = require('lodash.capitalize');
 
 /**
- * @param {Number}        statusCode
+ * @param {Number}        [statusCode=500]
  * @param {Object|String} [propertiesOrMessage]
  * @param {Object}        [properties]
  */
@@ -12,6 +12,7 @@ function HttpError(statusCode, propertiesOrMessage, properties) {
     Error.call(this);
     Error.captureStackTrace(this, this.constructor);
 
+    statusCode = statusCode || 500;
     properties = properties || {};
 
     if (typeof propertiesOrMessage === 'string') {
@@ -20,12 +21,15 @@ function HttpError(statusCode, propertiesOrMessage, properties) {
 
     Object.assign(this, propertiesOrMessage, properties);
 
-    this.message = this.message || httpStatusCodes[statusCode];
+    this.name       = upperCamelCase(httpStatusCodes[statusCode]);
+    this.statusCode = statusCode;
+    this.status     = statusCode;
+    this.message    = this.message || httpStatusCodes[statusCode];
 
-    Object.defineProperty(this, 'name', {
-        enumerable: false,
-        writable:   true,
-        value:      upperCamelCase(httpStatusCodes[statusCode])
+    Object.defineProperties(this, {
+        statusCode: { enumerable: false },
+        status:     { enumerable: false },
+        name:       { enumerable: false }
     });
 }
 
