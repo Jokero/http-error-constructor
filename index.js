@@ -5,17 +5,20 @@ var capitalize      = require('lodash.capitalize');
 
 /**
  * @param {Number}        statusCode
- * @param {Object|String} [paramsOrMessage]
+ * @param {Object|String} [propertiesOrMessage]
+ * @param {Object}        [properties]
  */
-function HttpError(statusCode, paramsOrMessage) {
+function HttpError(statusCode, propertiesOrMessage, properties) {
     Error.call(this);
     Error.captureStackTrace(this, this.constructor);
 
-    if (typeof paramsOrMessage === 'string') {
-        this.message = paramsOrMessage;
-    } else {
-        Object.assign(this, paramsOrMessage);
+    properties = properties || {};
+
+    if (typeof propertiesOrMessage === 'string') {
+        propertiesOrMessage = { message: propertiesOrMessage };
     }
+
+    Object.assign(this, propertiesOrMessage, properties);
 
     this.message = this.message || httpStatusCodes[statusCode];
 
@@ -32,8 +35,8 @@ Object.keys(httpStatusCodes).forEach(function(statusCode) {
     if (statusCode >= 400) {
         var upperCamelCasedStatusMessage = upperCamelCase(httpStatusCodes[statusCode]);
 
-        HttpError[upperCamelCasedStatusMessage] = function(paramsOrMessage) {
-            HttpError.call(this, statusCode, paramsOrMessage);
+        HttpError[upperCamelCasedStatusMessage] = function(propertiesOrMessage, properties) {
+            HttpError.call(this, statusCode, propertiesOrMessage, properties);
         };
 
         util.inherits(HttpError[upperCamelCasedStatusMessage], HttpError);
