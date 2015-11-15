@@ -15,11 +15,13 @@ function HttpError(statusCode, propertiesOrMessage, properties) {
     statusCode = statusCode || 500;
     properties = properties || {};
 
-    if (typeof propertiesOrMessage === 'string') {
-        propertiesOrMessage = { message: propertiesOrMessage };
+    if (propertiesOrMessage instanceof Object) {
+        properties = propertiesOrMessage;
+    } else if (typeof propertiesOrMessage === 'string') {
+        properties.message = propertiesOrMessage;
     }
 
-    Object.assign(this, propertiesOrMessage, properties);
+    Object.assign(this, properties);
 
     this.name       = upperCamelCase(httpStatusCodes[statusCode]);
     this.statusCode = statusCode;
