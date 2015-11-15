@@ -1,13 +1,13 @@
-var http       = require('http');
-var util       = require('util');
-var camelCase  = require('lodash.camelcase');
-var capitalize = require('lodash.capitalize');
+var httpStatusCodes = require('http').STATUS_CODES;
+var util            = require('util');
+var camelCase       = require('lodash.camelcase');
+var capitalize      = require('lodash.capitalize');
 
 /**
- * @param {Number}        status
+ * @param {Number}        statusCode
  * @param {Object|String} [paramsOrMessage]
  */
-function HttpError(status, paramsOrMessage) {
+function HttpError(statusCode, paramsOrMessage) {
     Error.call(this);
     Error.captureStackTrace(this, this.constructor);
 
@@ -17,24 +17,23 @@ function HttpError(status, paramsOrMessage) {
         Object.assign(this, paramsOrMessage);
     }
 
-    this.status  = status;
-    this.message = this.message || http.STATUS_CODES[this.status];
+    this.message = this.message || httpStatusCodes[statusCode];
 
     Object.defineProperty(this, 'name', {
         enumerable: false,
         writable:   true,
-        value:      upperCamelCase(http.STATUS_CODES[this.status])
+        value:      upperCamelCase(httpStatusCodes[statusCode])
     });
 }
 
 util.inherits(HttpError, Error);
 
-Object.keys(http.STATUS_CODES).forEach(function(status) {
-    if (status >= 400) {
-        var upperCamelCasedStatusMessage = upperCamelCase(http.STATUS_CODES[status]);
+Object.keys(httpStatusCodes).forEach(function(statusCode) {
+    if (statusCode >= 400) {
+        var upperCamelCasedStatusMessage = upperCamelCase(httpStatusCodes[statusCode]);
 
         HttpError[upperCamelCasedStatusMessage] = function(paramsOrMessage) {
-            HttpError.call(this, status, paramsOrMessage);
+            HttpError.call(this, statusCode, paramsOrMessage);
         };
 
         util.inherits(HttpError[upperCamelCasedStatusMessage], HttpError);
