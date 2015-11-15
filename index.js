@@ -1,5 +1,7 @@
-var http = require('http');
-var util = require('util');
+var http       = require('http');
+var util       = require('util');
+var camelCase  = require('lodash.camelcase');
+var capitalize = require('lodash.capitalize');
 
 /**
  * @param {Number}        status
@@ -40,10 +42,7 @@ Object.keys(http.STATUS_CODES).forEach(function(status) {
 });
 
 function upperCamelCase(string) {
-    return string.split(' ')
-                 .map(word => word[0].toUpperCase() + word.substr(1))
-                 .join('')
-                 .replace(/[^0-9a-z]/gi, '');
+    return capitalize(camelCase(string));
 }
 
 module.exports = HttpError;
