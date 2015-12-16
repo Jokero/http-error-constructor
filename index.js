@@ -39,13 +39,16 @@ util.inherits(HttpError, Error);
 
 Object.keys(httpStatusCodes).forEach(function(statusCode) {
     if (statusCode >= 400) {
-        var upperCamelCasedStatusMessage = upperCamelCase(httpStatusCodes[statusCode]);
-
-        HttpError[upperCamelCasedStatusMessage] = function(propertiesOrMessage, properties) {
+        var SpecificHttpError = function(propertiesOrMessage, properties) {
             HttpError.call(this, statusCode, propertiesOrMessage, properties);
         };
 
-        util.inherits(HttpError[upperCamelCasedStatusMessage], HttpError);
+        var upperCamelCasedStatusMessage        = upperCamelCase(httpStatusCodes[statusCode]);
+        HttpError[upperCamelCasedStatusMessage] = SpecificHttpError;
+
+        HttpError[statusCode] = SpecificHttpError;
+
+        util.inherits(SpecificHttpError, HttpError);
     }
 });
 
