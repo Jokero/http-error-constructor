@@ -22,7 +22,7 @@ npm install http-error-constructor
 **Parameters**
 
 * `[statusCode=500]` {Number} - Three-digit integer code. [Status Code Registry](http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
-* `[messageOrProperties]` {String | Object} - String message or object with additional properties. Default message is taken from `http.STATUS_CODES[<statusCode>]` ([http module documentation](https://nodejs.org/api/http.html#http_http_status_codes))
+* `[messageOrProperties]` {String | Object} - String message or object with additional properties
 * `[properties]` {Object} - Additional properties (used only if `messageOrProperties` is string)
 
 ### Examples
