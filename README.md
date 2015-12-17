@@ -62,6 +62,8 @@ var err = new HttpError(400, {
 // err.status - 400
 // err.message - 'Validation Failed'
 // err.fields - { phoneNumber: 'Invalid format' }
+
+// JSON.stringify(err) - '{"message": "Bad Request", "fields": { "phoneNumber": "Invalid format" } }'
 ```
 
 Using specific error constructor:
