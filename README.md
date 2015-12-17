@@ -16,13 +16,13 @@ npm install http-error-constructor
 ## Usage
 
 ### new HttpError([statusCode=500], [messageOrProperties], [properties])
-### new HttpError.<StatusName>([messageOrProperties], [properties])
-### new HttpError[<statusCode>]([messageOrProperties], [properties])
+### new HttpError.\<StatusName\>([messageOrProperties], [properties])
+### new HttpError\[\<statusCode\>\]([messageOrProperties], [properties])
 
 **Parameters**
 
 * `[statusCode=500]` {Number} - Three-digit integer code. [Status Code Registry](http://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml)
-* `[messageOrProperties]` {String | Object} - String message or object with additional properties. Default message from `http.STATUS_CODES[<statusCode>]` ([documentation](https://nodejs.org/api/http.html#http_http_status_codes)
+* `[messageOrProperties]` {String | Object} - String message or object with additional properties. Default message is taken from `http.STATUS_CODES[<statusCode>]` ([http module documentation](https://nodejs.org/api/http.html#http_http_status_codes))
 * `[properties]` {Object} - Additional properties (used only if `messageOrProperties` is string)
 
 ### Examples
@@ -34,7 +34,7 @@ var err = new HttpError(400);
 
 // err.statusCode - 400
 // err.status - 400
-// err.message - 'Bad Request' (default message)
+// err.message - 'Bad Request'
 ```
 
 With custom message and additional properties:
@@ -46,7 +46,7 @@ var err = new HttpError(400, 'Validation Failed', {
     }
 });
 
-/* or
+/* or include message to properties object
 var err = new HttpError(400, {
     message: 'Validation Failed',
     fields:  {
@@ -71,11 +71,21 @@ var properties = {
     }
 };
 
-var err = new HttpError.BadRequest(properties); // new HttpError[400](properties)
+var err = new HttpError.BadRequest(properties); // or new HttpError[400](properties)
 
 // err instanceof HttpError - true
 // err instanceof HttpError.BadRequest - true
 // err instanceof HttpError[400] - true
+```
+
+You can use [custom status code](http://tools.ietf.org/html/rfc7231#section-6):
+
+```js
+var err = new HttpError(471, 'Custom Error');
+
+// err.statusCode - 471
+// err.status - 471
+// err.message - 'Custom Error'
 ```
 
 ## Tests
