@@ -32,9 +32,12 @@ var HttpError = require('http-error-constructor');
 
 var err = new HttpError(400);
 
-// err.statusCode - 400
-// err.status - 400
+// err.name - 'BadRequest'     (not enumerable)
+// err.statusCode - 400        (not enumerable)
+// err.status - 400            (not enumerable)
 // err.message - 'Bad Request'
+
+// JSON.stringify(err) - '{"message": "Bad Request"}'
 ```
 
 With custom message and additional properties:
