@@ -83,7 +83,7 @@ var err = new HttpError.BadRequest(properties); // or new HttpError[400](propert
 // err instanceof HttpError[400] - true
 ```
 
-You can use [custom status code](http://tools.ietf.org/html/rfc7231#section-6):
+You can use [custom status codes](http://tools.ietf.org/html/rfc7231#section-6):
 
 ```js
 var err = new HttpError(471, 'Custom Error');
