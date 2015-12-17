@@ -17,7 +17,8 @@
 
     "keywords": [
         "http",
-        "error"
+        "error",
+        "constructor"
     ],
 
     "engines": {
