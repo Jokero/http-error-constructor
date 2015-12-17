@@ -23,7 +23,7 @@ function HttpError(statusCode, propertiesOrMessage, properties) {
 
     Object.assign(this, properties);
 
-    this.name       = upperCamelCase(httpStatusCodes[statusCode]);
+    this.name       = upperCamelCase(httpStatusCodes[statusCode]) || statusCode + ' Error';
     this.statusCode = statusCode;
     this.status     = statusCode;
     this.message    = this.message || httpStatusCodes[statusCode];
@@ -38,6 +38,8 @@ function HttpError(statusCode, propertiesOrMessage, properties) {
 util.inherits(HttpError, Error);
 
 Object.keys(httpStatusCodes).forEach(function(statusCode) {
+    statusCode = Number(statusCode);
+
     if (statusCode >= 400) {
         var SpecificHttpError = function(propertiesOrMessage, properties) {
             HttpError.call(this, statusCode, propertiesOrMessage, properties);
