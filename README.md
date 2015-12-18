@@ -50,7 +50,7 @@ var err = new HttpError(400, 'Validation Failed', {
     }
 });
 
-/* or include message in the properties object
+/* or you can include message in the properties object
 var err = new HttpError(400, {
     message: 'Validation Failed',
     fields:  {
