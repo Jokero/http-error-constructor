@@ -1,49 +1,61 @@
-var http = require('http');
-var util = require('util');
+var httpStatusCodes = require('http').STATUS_CODES;
+var util            = require('util');
+var camelCase       = require('lodash.camelcase');
+var capitalize      = require('lodash.capitalize');
 
 /**
- * @param {Number}        status
- * @param {Object|String} [paramsOrMessage]
+ * @param {Number}        [statusCode=500]
+ * @param {String|Object} [messageOrProperties]
+ * @param {Object}        [properties]
  */
-function HttpError(status, paramsOrMessage) {
+function HttpError(statusCode, messageOrProperties, properties) {
     Error.call(this);
     Error.captureStackTrace(this, this.constructor);
 
-    if (typeof paramsOrMessage === 'string') {
-        this.message = paramsOrMessage;
-    } else {
-        Object.assign(this, paramsOrMessage);
+    statusCode = statusCode || 500;
+    properties = properties || {};
+
+    if (messageOrProperties instanceof Object) {
+        properties = messageOrProperties;
+    } else if (typeof messageOrProperties === 'string') {
+        properties.message = messageOrProperties;
     }
 
-    this.status  = status;
-    this.message = this.message || http.STATUS_CODES[this.status];
+    Object.assign(this, properties);
 
-    Object.defineProperty(this, 'name', {
-        enumerable: false,
-        writable:   true,
-        value:      upperCamelCase(http.STATUS_CODES[this.status])
+    this.name       = upperCamelCase(httpStatusCodes[statusCode]) || statusCode + ' Error';
+    this.statusCode = statusCode;
+    this.status     = statusCode;
+    this.message    = this.message || httpStatusCodes[statusCode];
+
+    Object.defineProperties(this, {
+        statusCode: { enumerable: false },
+        status:     { enumerable: false },
+        name:       { enumerable: false }
     });
 }
 
 util.inherits(HttpError, Error);
 
-Object.keys(http.STATUS_CODES).forEach(function(status) {
-    if (status >= 400) {
-        var upperCamelCasedStatusMessage = upperCamelCase(http.STATUS_CODES[status]);
+Object.keys(httpStatusCodes).forEach(function(statusCode) {
+    statusCode = Number(statusCode);
 
-        HttpError[upperCamelCasedStatusMessage] = function(paramsOrMessage) {
-            HttpError.call(this, status, paramsOrMessage);
+    if (statusCode >= 400) {
+        var SpecificHttpError = function(messageOrProperties, properties) {
+            HttpError.call(this, statusCode, messageOrProperties, properties);
         };
 
-        util.inherits(HttpError[upperCamelCasedStatusMessage], HttpError);
+        var upperCamelCasedStatusMessage        = upperCamelCase(httpStatusCodes[statusCode]);
+        HttpError[upperCamelCasedStatusMessage] = SpecificHttpError;
+
+        HttpError[statusCode] = SpecificHttpError;
+
+        util.inherits(SpecificHttpError, HttpError);
     }
 });
 
 function upperCamelCase(string) {
-    return string.split(' ')
-                 .map(word => word[0].toUpperCase() + word.substr(1))
-                 .join('')
-                 .replace(/[^0-9a-z]/gi, '');
+    return capitalize(camelCase(string));
 }
 
 module.exports = HttpError;

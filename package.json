@@ -1,5 +1,41 @@
 {
-    "name":    "http-error",
-    "version": "0.0.1",
-    "private": true
+    "name":        "http-error-constructor",
+    "description": "Constructors for HTTP errors",
+    "version":     "0.1.0",
+
+    "author": {
+        "name":  "Dmitry Kirilyuk",
+        "email": "gk.joker@gmail.com"
+    },
+
+    "repository": {
+        "type": "git",
+        "url":  "https://github.com/Jokero/http-error-constructor.git"
+    },
+
+    "license": "MIT",
+
+    "keywords": [
+        "http",
+        "error",
+        "constructor"
+    ],
+
+    "engines": {
+        "node" : ">=4.0.0"
+    },
+
+    "dependencies": {
+        "lodash.camelcase":  "3.0.1",
+        "lodash.capitalize": "3.0.0"
+    },
+
+    "devDependencies": {
+        "mocha": "2.3.4",
+        "chai":  "3.4.1"
+    },
+
+    "scripts": {
+        "test": "./node_modules/.bin/mocha tests/*.js"
+    }
 }
