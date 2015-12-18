@@ -17,6 +17,7 @@ npm install http-error-constructor
 
 ### new HttpError([statusCode=500], [messageOrProperties], [properties])
 ### new HttpError.\<StatusName\>([messageOrProperties], [properties])
+`StatusName` is UpperCamelCased status name (description)
 ### new HttpError\[\<statusCode\>\]([messageOrProperties], [properties])
 
 **Parameters**
