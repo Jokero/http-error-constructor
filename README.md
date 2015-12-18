@@ -89,6 +89,7 @@ You can use [custom status codes](http://tools.ietf.org/html/rfc7231#section-6):
 ```js
 var err = new HttpError(471, 'Custom Error');
 
+// err.name - '471 Error'
 // err.statusCode - 471
 // err.status - 471
 // err.message - 'Custom Error'
