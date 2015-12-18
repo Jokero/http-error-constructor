@@ -5,7 +5,7 @@ Constructors for HTTP errors
 [![NPM version](https://img.shields.io/npm/v/http-error-constructor.svg)](https://npmjs.org/package/http-error-constructor)
 [![Build status](https://img.shields.io/travis/Jokero/http-error-constructor.svg)](https://travis-ci.org/Jokero/http-error-constructor)
 
-**Note:** This plugin will only work with Node.js >= 4.0.
+**Note:** This module will only work with Node.js >= 4.0.
 
 ## Installation
 
