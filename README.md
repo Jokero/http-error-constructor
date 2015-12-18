@@ -72,7 +72,7 @@ Using specific error constructor:
 ```js
 var properties = {
     message: 'Validation Failed',
-    fields: {
+    fields:  {
         phoneNumber: 'Invalid format'
     }
 };
